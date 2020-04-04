@@ -1,17 +1,37 @@
-const express = require('express')
-const app = express()
-const port = 3000
+// Require dependencies
+var http = require("http");
+var fs = require("fs");
 
-var bodyParser = require('body-parser')
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-    extended: true
-}));
+// Set our port to 8080
+var PORT = 8080;
 
-app.use(express.static('public'))
+var server = http.createServer(handleRequest);
 
+function handleRequest(req, res) {
 
+    // Capture the url the request is made to
+    var path = req.url;
 
-app.get('/', (req, res) => res.send('Hello World!'))
+    // When we visit different urls, read and respond with different files
+    switch (path) {
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+        case "/notes":
+            return fs.readFile(__dirname + "/public/notes.html", function (err, data) {
+                if (err) throw err;
+                res.writeHead(200, { "Content-Type": "text/html" });
+                res.end(data);
+            });
+        // default to rendering index.html, if none of above cases are hit
+        default:
+            return fs.readFile(__dirname + "/public/index.html", function (err, data) {
+                if (err) throw err;
+                res.writeHead(200, { "Content-Type": "text/html" });
+                res.end(data);
+            });
+    }
+}
+
+// Starts our server.
+server.listen(PORT, function () {
+    console.log("Server is listening on PORT: " + PORT);
+});

@@ -1,37 +1,45 @@
 // Require dependencies
-var http = require("http");
-var fs = require("fs");
+const express = require("express")
+
+const app = express()
 
 // Set our port to 8080
-var PORT = 8080;
+const PORT = 8080;
+// var PORT = process.env.PORT || 8080;
 
-var server = http.createServer(handleRequest);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-function handleRequest(req, res) {
 
-    // Capture the url the request is made to
-    var path = req.url;
-
-    // When we visit different urls, read and respond with different files
-    switch (path) {
-
-        case "/notes":
-            return fs.readFile(__dirname + "/public/notes.html", function (err, data) {
-                if (err) throw err;
-                res.writeHead(200, { "Content-Type": "text/html" });
-                res.end(data);
-            });
-        // default to rendering index.html, if none of above cases are hit
-        default:
-            return fs.readFile(__dirname + "/public/index.html", function (err, data) {
-                if (err) throw err;
-                res.writeHead(200, { "Content-Type": "text/html" });
-                res.end(data);
-            });
-    }
-}
+require("./routes/apiRoutes")(app);
+require("./routes/htmlRoutes")(app);
 
 // Starts our server.
-server.listen(PORT, function () {
+app.listen(PORT, function () {
     console.log("Server is listening on PORT: " + PORT);
 });
+// var server = http.createServer(handleRequest);
+
+// function handleRequest(req, res) {
+
+//     // Capture the url the request is made to
+//     var path = req.url;
+
+//     // When we visit different urls, read and respond with different files
+//     switch (path) {
+
+//         case "/notes":
+//             return fs.readFile(__dirname + "/public/notes.html", function (err, data) {
+//                 if (err) throw err;
+//                 res.writeHead(200, { "Content-Type": "text/html" });
+//                 res.end(data);
+//             });
+//         // default to rendering index.html, if none of above cases are hit
+//         default:
+//             return fs.readFile(__dirname + "/public/index.html", function (err, data) {
+//                 if (err) throw err;
+//                 res.writeHead(200, { "Content-Type": "text/html" });
+//                 res.end(data);
+//             });
+//     }
+// }

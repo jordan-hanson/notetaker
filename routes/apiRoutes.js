@@ -7,14 +7,7 @@ module.exports = function (app) {
     });
 
     app.post("/api/notes", function (req, res) {
-
-        if (noteData.length < 5) {
-            noteData.push(req.body);
-            res.json(true);
-        }
-        else {
-            res.json(false);
-        }
+        res.json(noteData);
     });
 
     app.post("/api/clear", function (req, res) {

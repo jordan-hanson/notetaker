@@ -41,3 +41,13 @@
 </body>
 
 </html>
+
+<script>
+
+  function runNotesQuery() {
+    $.ajax({ url: "/api/notes", method: "GET" })
+      .then(function (noteData) {
+        console.log("this is noteData", noteData)
+      })
+  }
+</script>

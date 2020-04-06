@@ -14,7 +14,6 @@ var getNotes = function () {
     method: "GET"
   });
 };
-console.log("this is the notes", getNotes)
 // A function for saving a note to the db
 var saveNote = function (note) {
   return $.ajax({
@@ -23,7 +22,6 @@ var saveNote = function (note) {
     method: "POST"
   });
 };
-console.log("this is the saved note", saveNote)
 // A function for deleting a note from the db
 var deleteNote = function (id) {
   return $.ajax({
@@ -31,7 +29,6 @@ var deleteNote = function (id) {
     method: "DELETE"
   });
 };
-console.log("this is the deleted note", deleteNote)
 // If there is an activeNote, display it, otherwise render empty inputs
 var renderActiveNote = function () {
   $saveNoteBtn.hide();
@@ -58,6 +55,7 @@ var handleNoteSave = function () {
   };
 
   saveNote(newNote).then(function (data) {
+    console.log("save note data", data)
     getAndRenderNotes();
     renderActiveNote();
   });

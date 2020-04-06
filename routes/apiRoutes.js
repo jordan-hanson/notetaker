@@ -1,4 +1,4 @@
-const noteData = require("../db/noteDb");
+let noteData = require("../db/noteDb");
 
 module.exports = function (app) {
 
@@ -7,6 +7,9 @@ module.exports = function (app) {
     });
 
     app.post("/api/notes", function (req, res) {
+        console.log("body", req.body)
+        req.body.id = noteData.length
+        noteData.push(req.body)
         res.json(noteData);
     });
 
@@ -16,4 +19,16 @@ module.exports = function (app) {
         // what does res.json ok: true mean
         res.json({ ok: true });
     });
+
+    app.delete("/api/notes/:id", function (req, res) {
+        console.log("about to delete", req.params)
+        var newNoteData = [];
+        for (var i = 0; i < noteData.length; i++) {
+            if (noteData[i].id != req.params.id) {
+                newNoteData.push(noteData[i])
+            }
+        }
+        noteData = newNoteData
+        res.json(noteData)
+    })
 };
